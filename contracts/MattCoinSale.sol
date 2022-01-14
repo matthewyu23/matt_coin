@@ -26,13 +26,16 @@ contract MattCoinSale {
     }
 
     function buyTokens(uint256 _numberOfTokens) public payable {
-
         require(msg.value == multiply(_numberOfTokens, tokenPrice));
         require(tokenContract.balanceOf(address(this)) >= _numberOfTokens);
         require(tokenContract.transfer(msg.sender, _numberOfTokens));
         tokensSold += _numberOfTokens;
         emit Sell(msg.sender, _numberOfTokens);
+    }
 
+    function endSale() public {
+        require(msg.sender == admin);
+        require(tokenContract.transfer(admin, tokenContract.balanceOf(address(this))));
     }
 
 }

@@ -58,4 +58,25 @@ contract('MattCoin', function(accounts) {
         })
     })
 
+    it('ends token sale', function() {
+        return MattCoin.deployed().then(function(instance) {
+            tokenInstance = instance;
+            return MattCoinSale.deployed();
+        }).then(function(instance) {
+            tokenSaleInstance = instance;
+            return tokenSaleInstance.endSale({ from: buyer })
+        }).then(assert.fail).catch(function(error) {
+            assert(error.message.indexOf('revert') >= 0, 'must be admin to end sale')
+            return tokenSaleInstance.endSale({ from: admin })
+        }).then(function(receipt) {
+            return tokenInstance.balanceOf(admin);
+        }).then(function(balance) {
+            assert.equal(balance.toNumber(), 999990, 'returns all tokens to admin')
+            balance = web3.eth.getBalance(tokenSaleInstance.address).then(function(balance) {
+                assert.equal(balance.toNumber(), 0);
+            });
+            
+        })
+    })
+
 })
