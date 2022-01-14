@@ -1,0 +1,20 @@
+{
+    "name": "matt-coin-sale",
+    "version": "1.0.0",
+    "description": "Matt Coin Sale ICO",
+    "main": "truffle.js",
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "dev": "lite-server"
+    },
+    "author": "Matthew Yu",
+    "license": "Matt Coin Sale ICO",
+    "devDependencies": {
+        "lite-server": "^2.3.0"
+    },
+    "dependencies": {
+        "web3": "^1.6.1"
+    }
+}
