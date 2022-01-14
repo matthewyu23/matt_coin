@@ -1,6 +1,7 @@
 App = {
     web3Provider: null,
     contracts: {},
+    account: "0x0",
     init: function() {
         console.log("App initialized");
         return App.initWeb3();
@@ -23,10 +24,22 @@ App = {
             App.contracts.MattCoinSale.setProvider(App.web3Provider);
             App.contracts.MattCoinSale.deployed().then(function(mattCoinSale) {
                 console.log("MattCoinSale Address:", mattCoinSale.address);
-            });
+            })
+          }).done(function() {
+                $.getJSON("MattCoin.json", function(mattCoin) {
+                App.contracts.MattCoin = TruffleContract(mattCoin);
+                App.contracts.MattCoin.setProvider(App.web3Provider);
+                App.contracts.MattCoin.deployed().then(function(mattCoin) {
+                    console.log("MattCoin Address:", mattCoin.address);
+                })
+                return App.render()
+            })
+          })
+    }, 
+    render: function() {
+      $("#accountAddress").html("Your Account: " + web3.currentProvider.selectedAddress
+      );
 
-
-        });
     }
 
     
