@@ -1,7 +1,6 @@
 App = {
     web3Provider: null,
     contracts: {},
-    account: "0x0",
     loading: false,
     tokenPrice: 1000000000000000,
     tokensSold: 0,
@@ -79,10 +78,25 @@ App = {
         loader.hide();
         content.show();
       })
-
-
-
+    }, 
+    
+    buyTokens: function() {
+      $('#content').hide();
+      $('#loader').show();
+      var numberOfTokens = $('#numberOfTokens').val();
+      App.contracts.MattCoinSale.deployed().then(function(instance) {
+        return instance.buyTokens(numberOfTokens, {
+          from: web3.currentProvider.selectedAddress,
+          value: numberOfTokens * App.tokenPrice,
+          gas: 500000 // Gas limit
+        });
+      }).then(function(result) {
+        console.log("Tokens bought...")
+        $('form').trigger('reset') // reset number of tokens in form
+        // Wait for Sell event
+      });
     }
+  
 
     
 }
