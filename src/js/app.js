@@ -10,10 +10,13 @@ App = {
         return App.initWeb3();
     }, 
     initWeb3: function() {
-        if (typeof web3 !== 'undefined') {
+        if (typeof window !== 'undefined' && typeof window.ethereum !== 'undefined') {
           // If a web3 instance is already provided by Meta Mask.
-          App.web3Provider = web3.currentProvider;
-          web3 = new Web3(web3.currentProvider);
+          window.ethereum.enable();
+          App.web3Provider = window.ethereum;
+          web3 = new Web3(window.ethereum);
+        } else if (typeof window !== 'undefined' && typeof window.web3 !== 'undefined') {
+          web3 = new Web3(window.web3.currentProvider);
         } else {
           // Specify default instance if no web3 instance provided
           App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
